@@ -65,8 +65,10 @@ class Evolution(object):
                         nucleotide_propose_change = list(self.transition_matrix["I"].keys())[propose_change]
                         sequence_species.mutate_nucleatide_insertion(n,nucleotide_propose_change)
                         for species_2 in self.evolving_sequences:
-                            sequence_species = self.evolving_sequences[species_2]
-                            sequence_species.add_deletion(self,n)
+                            if(species!=species_2):
+                                sequence_species = self.evolving_sequences[species_2]
+                                sequence_species.add_deletion(self,n)
+                            
                         leng=len(self.insertion[species])
                         n+1
 
