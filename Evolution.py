@@ -16,7 +16,8 @@ class Evolution(object):
         '''
         if not isinstance(ancestral_sequence, Sequence):
             raise TypeError("ancestral_sequence must be a Sequence object!")
-        
+        self.insertion={}
+        self.insertion[ancestral_sequence.get_name()]=[0]*ancestral_sequence.sequence_length()
         self.evolving_sequences = {}
         self.evolving_sequences[ancestral_sequence.get_name()] = ancestral_sequence
         self.transition_matrix = transition_matrix
@@ -42,15 +43,39 @@ class Evolution(object):
         for gen in range(generations):
             for species in self.evolving_sequences:
                 sequence_species = self.evolving_sequences[species]
+                self.insertion[species]=[0]*sequence_species.sequence_length()
                 for n in range(sequence_species.sequence_length()):
                     nucleotide_at_position_n = sequence_species.nucleotide_at_position(n)
                     propose_change = self.random_transition[nucleotide_at_position_n].sample()
                     nucleotide_propose_change = list(self.transition_matrix[nucleotide_at_position_n].keys())[propose_change]
                     print(nucleotide_at_position_n,nucleotide_propose_change)
-                    sequence_species.mutate_nucleotide_at_position(n,nucleotide_propose_change)
                     if(nucleotide_propose_change=="I"):
-                        if(n!=sequence_species.sequence_length()-1):
-                            n+=1               
+                        self.insertion[species][n]=1
+                    else:
+                         sequence_species.mutate_nucleotide_at_position(n,nucleotide_propose_change) 
+
+            for species in self.evolving_sequences:
+                sequence_species = self.evolving_sequences[species]
+                n=0
+                leng=len(self.insertion[species])
+                while(n>leng):
+                    if (self.insertion[species][n]==1):
+                        nucleotide_at_position_n = sequence_species.nucleotide_at_position(n)
+                        propose_change = self.random_transition[nucleotide_at_position_n].sample()
+                        nucleotide_propose_change = list(self.transition_matrix[nucleotide_at_position_n].keys())[propose_change]
+                        sequence_species.mutate_nucleatide_insertion(n,nucleotide_propose_change)
+                        for species_2 in self.evolving_sequences:
+                            sequence_species = self.evolving_sequences[species_2]
+                            sequence_species.add_deletion(self,n)
+                        leng=len(self.insertion[species])
+                        n+1
+
+
+                        
+
+                        
+
+                        
 
             
 def main():
