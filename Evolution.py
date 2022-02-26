@@ -60,9 +60,9 @@ class Evolution(object):
                 leng=len(self.insertion[species])
                 while(n>leng):
                     if (self.insertion[species][n]==1):
-                        nucleotide_at_position_n = sequence_species.nucleotide_at_position(n)
-                        propose_change = self.random_transition[nucleotide_at_position_n].sample()
-                        nucleotide_propose_change = list(self.transition_matrix[nucleotide_at_position_n].keys())[propose_change]
+                        
+                        propose_change = self.random_transition["I"].sample()
+                        nucleotide_propose_change = list(self.transition_matrix["I"].keys())[propose_change]
                         sequence_species.mutate_nucleatide_insertion(n,nucleotide_propose_change)
                         for species_2 in self.evolving_sequences:
                             sequence_species = self.evolving_sequences[species_2]
@@ -80,7 +80,7 @@ class Evolution(object):
             
 def main():
     sequence_ancestral = Sequence("Ancestral", "ACTGACTGACTGACTGACTGACTGACTGACTGACTG")
-    transition_probability = {"A":{"G":0.029,"C":0.029,"T":0.029,"A":0.88,"D":0.002,"I":0.002}, "C":{"G":0.029,"C":0.88,"T":0.029,"A":0.029,"D":0.002,"I":0.002}, "G":{"G":0.88,"C":0.029,"T":0.029,"A":0.029,"D":0.002,"I":0.002},"T":{"G":0.029,"C":0.029,"T":0.88,"A":0.029,"D":0.002,"I":0.002},"D":{"G":0.029,"C":0.029,"T":0.029,"A":0.029,"D":0.88,"I":0.002},"I":{"G":0.029,"C":0.029,"T":0.029,"A":0.029,"D":0.002,"I":0.88}}
+    transition_probability = {"A":{"G":0.029,"C":0.029,"T":0.029,"A":0.88,"_":0.002,"I":0.002}, "C":{"G":0.029,"C":0.88,"T":0.029,"A":0.029,"_":0.002,"I":0.002}, "G":{"G":0.88,"C":0.029,"T":0.029,"A":0.029,"_":0.002,"I":0.002},"T":{"G":0.029,"C":0.029,"T":0.88,"A":0.029,"_":0.002,"I":0.002},"_":{"G":0.029,"C":0.029,"T":0.029,"A":0.029,"_":0.88,"I":0.002},"I":{"G":0.25,"C":0.25,"T":0.25,"A":0.25}}
     evolution = Evolution(sequence_ancestral, transition_probability)
     
     evolution.split_species_in_two("Ancestral", "Species2")
