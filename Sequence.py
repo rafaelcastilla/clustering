@@ -55,14 +55,18 @@ class Sequence(object):
             self.mutations[position] = self.mutations[position] + 1
         
         self.string_of_nucleotides[position] = nucleotide
-        
+        """
+        add insertions
+        """
     def mutate_nucleatide_insertion(self,position,nucleotide):
-        if(nucleotide=="I"):
-            self.string_of_nucleotides.insert(position,self.string_of_nucleotides[position])
-
+        self.mutations.insert(position,1)
         self.string_of_nucleotides.insert(position,nucleotide)
-    
+        
+    """
+    add deletions
+    """
     def add_deletion(self,position):
+        self.mutations.insert(position,0)
         self.string_of_nucleotides.insert(position,"_")
 
 
