@@ -49,7 +49,9 @@ class Sequence(object):
     def __str__(self):
         return self.name + ' : ' + str(self.string_of_nucleotides)
     
-    
+    def printstr(self):
+        return self.name + ' : ' + "".join(str(self.string_of_nucleotides))
+
     def mutate_nucleotide_at_position(self,position,nucleotide):
         if(nucleotide!=self.string_of_nucleotides[position]):
             self.mutations[position] = self.mutations[position] + 1
