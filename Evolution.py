@@ -94,22 +94,13 @@ def main():
     evolution = Evolution(sequence_ancestral, transition_probability)
     evolution.split_species_in_two("Ancestral", "Species2")
     
-    evolution.evolve(100)
+    evolution.evolve(1000)
     
     print(evolution.get_sequence_species("Ancestral"))
-
-    
-    sequen="Ancestral: "
-    for n in range(evolution.get_sequence_species("Ancestral").sequence_length()):
-        sequen+=evolution.get_sequence_species("Ancestral").nucleotide_at_position(n)
-    print(sequen)
-    sequen="Species2: "
-    for n in range(evolution.get_sequence_species("Species2").sequence_length()):
-        sequen+=evolution.get_sequence_species("Species2").nucleotide_at_position(n)
-    print(evolution.printstr())
-
+    print(evolution.get_sequence_species("Species2"))
     print(len(sequ))
-    print(evolution.get_sequence_species("Ancestral").sequence_length())  
+    print(evolution.get_sequence_species("Ancestral").sequence_length())
+    print(evolution.get_sequence_species("Species2").sequence_length())  
 
     
 if __name__ == "__main__":
