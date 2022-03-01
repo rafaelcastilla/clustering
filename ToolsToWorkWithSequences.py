@@ -50,7 +50,7 @@ class ToolsToWorkWithSequences(object):
         # initialising counter
         counter = 0
         # iterating over all the nucleotide positions in the sequences
-        for i in range(S1.sequence_length()):
+        for i in range(S1.sequence_length()-1):
             # if the nucleotide at that position is not the same between the sequences, add one to the counter
             if S1.nucleotide_at_position(i) != S2.nucleotide_at_position(i):
                 counter +=1
