@@ -1,5 +1,4 @@
 '''
-
 @author: olao
 '''
 from Sequence import Sequence
@@ -49,37 +48,27 @@ class Evolution(object):
                 sequence_species = self.evolving_sequences[species]             #name the species
                 self.insertion[species]=[]  #inicializate the diccionary for key specie and list of of insertion
                 for n in range(sequence_species.sequence_length()):             ##look at each nucleotide in the sequence
-                    nucleotide_at_position_n = sequence_species.nucleotide_at_position(n)                   #look the nucleotid in position n
+                    nucleotide_at_position_n = sequence_species.nucleotide_at_position(n)                   #look the nucleotide in position n
                     propose_change = self.random_transition[nucleotide_at_position_n].sample()              
-                    nucleotide_propose_change = list(self.transition_matrix[nucleotide_at_position_n].keys())[propose_change]   #the nucleotid tha can change
-                    print(nucleotide_at_position_n,nucleotide_propose_change)                   #print the chanche
+                    nucleotide_propose_change = list(self.transition_matrix[nucleotide_at_position_n].keys())[propose_change]   #the nucleotide tha can change
+                    #print(nucleotide_at_position_n,nucleotide_propose_change)                   #print the chanche
                     if(nucleotide_propose_change=="I"):                         #fi have a insertion
                         self.insertion[species].append(n)                          #add 1 in a indice
                     else:                                                           
                          sequence_species.mutate_nucleotide_at_position(n,nucleotide_propose_change) #make the mutatio
+
             for species in self.evolving_sequences:  
                 sequence_species = self.evolving_sequences[species]
                 for n in self.insertion[species]:
                     propose_change = self.random_transition["I"].sample()
-                    nucleotide_propose_change = list(self.transition_matrix["I"].keys())[propose_change] #the new nucleotid
+                    nucleotide_propose_change = list(self.transition_matrix["I"].keys())[propose_change] #the new nucleotide
                     sequence_species.mutate_nucleatide_insertion(n,nucleotide_propose_change)
                     for species_2 in self.evolving_sequences:                       #make the deletion of others species
                             if(species!=species_2):
-                                sequence_species = self.evolving_sequences[species_2]       
-                                sequence_species.add_deletion(n)
+                                sequence_species2 = self.evolving_sequences[species_2]       
+                                sequence_species2.add_deletion(n)
                                 
-
-
             
-
-                    
-
-
-                        
-
-                        
-
-                        
 
             
 def main():
@@ -94,16 +83,23 @@ def main():
     evolution = Evolution(sequence_ancestral, transition_probability)
     evolution.split_species_in_two("Ancestral", "Species2")
     
-    evolution.evolve(1000)
+    evolution.evolve(100)
     
     print(evolution.get_sequence_species("Ancestral"))
-    print(evolution.get_sequence_species("Species2"))
+
+    
+    sequen="Ancestral: "
+    for n in range(evolution.get_sequence_species("Ancestral").sequence_length()):
+        sequen+=evolution.get_sequence_species("Ancestral").nucleotide_at_position(n)
+    print(sequen)
+    sequen="Species2: "
+    for n in range(evolution.get_sequence_species("Species2").sequence_length()):
+        sequen+=evolution.get_sequence_species("Species2").nucleotide_at_position(n)
+    print(evolution.printstr())
+
     print(len(sequ))
-    print(evolution.get_sequence_species("Ancestral").sequence_length())
-    print(evolution.get_sequence_species("Species2").sequence_length())  
+    print(evolution.get_sequence_species("Ancestral").sequence_length())  
 
     
 if __name__ == "__main__":
-    main ()         
-        
-        
+    main ()
