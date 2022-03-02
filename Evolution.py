@@ -1,5 +1,8 @@
 '''
-@author: olao
+@authors:
+Janina Estañol Ruscalleda
+Melitza Roxanne Hesseling
+Francisco Rafael Castilla Patino
 '''
 from Sequence import Sequence
 from Alias_Vose import RandomMultinomial
@@ -39,21 +42,20 @@ class Evolution(object):
     
     
     '''
-     you give this function an evolution time and it returns a mutated sequence
-    
+    You give this function an evolution time and it returns a mutated sequence
     '''
     def evolve(self, generations):
         for gen in range(generations):                                          #the number of generations
             for species in self.evolving_sequences:                             #the number of sequences
                 sequence_species = self.evolving_sequences[species]             #name the species
-                self.insertion[species]=[]  #inicializate the diccionary for key specie and list of of insertion
+                self.insertion[species]=[]                                      #inicializate the diccionary for key specie and list of of insertion
                 for n in range(sequence_species.sequence_length()):             ##look at each nucleotide in the sequence
-                    nucleotide_at_position_n = sequence_species.nucleotide_at_position(n)                   #look the nucleotide in position n
+                    nucleotide_at_position_n = sequence_species.nucleotide_at_position(n)   #look the nucleotide in position n
                     propose_change = self.random_transition[nucleotide_at_position_n].sample()              
                     nucleotide_propose_change = list(self.transition_matrix[nucleotide_at_position_n].keys())[propose_change]   #the nucleotide tha can change
-                    #print(nucleotide_at_position_n,nucleotide_propose_change)                   #print the chanche
-                    if(nucleotide_propose_change=="I"):                         #fi have a insertion
-                        self.insertion[species].append(n)                          #add 1 in a indice
+                    #print(nucleotide_at_position_n,nucleotide_propose_change)           #print the change
+                    if(nucleotide_propose_change=="I"):                         #if have a insertion
+                        self.insertion[species].append(n)                       #add 1 in a indice
                     else:                                                           
                          sequence_species.mutate_nucleotide_at_position(n,nucleotide_propose_change) #make the mutatio
 
@@ -63,7 +65,7 @@ class Evolution(object):
                     propose_change = self.random_transition["I"].sample()
                     nucleotide_propose_change = list(self.transition_matrix["I"].keys())[propose_change] #the new nucleotide
                     sequence_species.mutate_nucleatide_insertion(n,nucleotide_propose_change)
-                    for species_2 in self.evolving_sequences:                       #make the deletion of others species
+                    for species_2 in self.evolving_sequences:                    #make the deletion of others species
                             if(species!=species_2):
                                 sequence_species2 = self.evolving_sequences[species_2]       
                                 sequence_species2.add_deletion(n)
@@ -71,35 +73,35 @@ class Evolution(object):
             
 
             
-def main():
-    sequ="ACTGACTGACTGACTGACTGACTGACTGACTGACTG"
-    sequence_ancestral = Sequence("Ancestral", sequ)
-    transition_probability = {"A":{"G":0.0475,"C":0.0475,"T":0.0475,"A":0.81,"_":0.0001,"I":0.0001}, 
-    "C":{"G":0.0475,"C":0.81,"T":0.0475,"A":0.0475,"_":0.0001,"I":0.0001},
-     "G":{"G":0.81,"C":0.0475,"T":0.0475,"A":0.0475,"_":0.0001,"I":0.0001},
-     "T":{"G":0.0475,"C":0.0475,"T":0.81,"A":0.0475,"_":0.0001,"I":0.0001},
-     "_":{"G":0.0475,"C":0.0475,"T":0.0475,"A":0.0475,"_":0.81},
-     "I":{"G":0.25,"C":0.25,"T":0.25,"A":0.25}}
-    evolution = Evolution(sequence_ancestral, transition_probability)
-    evolution.split_species_in_two("Ancestral", "Species2")
+# def main():
+#     sequ="ACTGACTGACTGACTGACTGACTGACTGACTGACTG"
+#     sequence_ancestral = Sequence("Ancestral", sequ)
+#     transition_probability = {"A":{"G":0.0475,"C":0.0475,"T":0.0475,"A":0.81,"_":0.0001,"I":0.0001}, 
+#     "C":{"G":0.0475,"C":0.81,"T":0.0475,"A":0.0475,"_":0.0001,"I":0.0001},
+#      "G":{"G":0.81,"C":0.0475,"T":0.0475,"A":0.0475,"_":0.0001,"I":0.0001},
+#      "T":{"G":0.0475,"C":0.0475,"T":0.81,"A":0.0475,"_":0.0001,"I":0.0001},
+#      "_":{"G":0.0475,"C":0.0475,"T":0.0475,"A":0.0475,"_":0.81},
+#      "I":{"G":0.25,"C":0.25,"T":0.25,"A":0.25}}
+#     evolution = Evolution(sequence_ancestral, transition_probability)
+#     evolution.split_species_in_two("Ancestral", "Species2")
     
-    evolution.evolve(100)
+#     evolution.evolve(100)
     
-    print(evolution.get_sequence_species("Ancestral"))
+#     print(evolution.get_sequence_species("Ancestral"))
 
     
-    sequen="Ancestral: "
-    for n in range(evolution.get_sequence_species("Ancestral").sequence_length()):
-        sequen+=evolution.get_sequence_species("Ancestral").nucleotide_at_position(n)
-    print(sequen)
-    sequen="Species2: "
-    for n in range(evolution.get_sequence_species("Species2").sequence_length()):
-        sequen+=evolution.get_sequence_species("Species2").nucleotide_at_position(n)
-    print(evolution.printstr())
+#     sequen="Ancestral: "
+#     for n in range(evolution.get_sequence_species("Ancestral").sequence_length()):
+#         sequen+=evolution.get_sequence_species("Ancestral").nucleotide_at_position(n)
+#     print(sequen)
+#     sequen="Species2: "
+#     for n in range(evolution.get_sequence_species("Species2").sequence_length()):
+#         sequen+=evolution.get_sequence_species("Species2").nucleotide_at_position(n)
+#     print(evolution.printstr())
 
-    print(len(sequ))
-    print(evolution.get_sequence_species("Ancestral").sequence_length())  
+#     print(len(sequ))
+#     print(evolution.get_sequence_species("Ancestral").sequence_length())  
 
     
-if __name__ == "__main__":
-    main ()
+# if __name__ == "__main__":
+#     main ()
